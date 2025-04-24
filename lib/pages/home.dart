@@ -10,9 +10,30 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
+class Person {
+  final String name;
+  final String job;
+
+  Person(this.name, this.job);
+}
+
 class _HomePageState extends State<HomePage> {
   List<CategoryModel> categories = [];
   List<DietModel> diets = [];
+
+    List<Person> people = [
+      Person("Alice", "Engineer"),
+      Person("Bob", "Designer"),
+      Person("Charlie", "Doctor"),
+      Person("David", "Developer"),
+      Person("Eva", "Artist"),
+  ];
+  List<Person> suggestions = [];
+
+  int _currentIndex = 0;
+  final FocusNode _searchFocusNode = FocusNode();
+  final TextEditingController _searchController = TextEditingController();
+  final LayerLink _layerLink = LayerLink();
 
   void getAll() {
     categories = CategoryModel.getCategories();
@@ -25,20 +46,111 @@ class _HomePageState extends State<HomePage> {
     getAll();
     return Scaffold(
       appBar: appBar(),
+  // body: Padding(
+  //       padding: const EdgeInsets.all(16.0),
+  //       child: Column(
+  //         children: [
+  //           TextField(
+  //             controller: _searchController,
+  //             onChanged: _onSearchChanged,
+  //             decoration: InputDecoration(
+  //               hintText: "Search person...",
+  //               border: OutlineInputBorder(),
+  //             ),
+  //           ),
+  //           SizedBox(height: 10),
+  //           Expanded(
+  //             child: ListView.builder(
+  //               itemCount: suggestions.length,
+  //               itemBuilder: (context, index) {
+  //                 final person = suggestions[index];
+  //                 return ListTile(
+  //                   title: Text(person.name),
+  //                   subtitle: Text(person.job),
+  //                   onTap: () {
+  //                     // Set text to selected suggestion
+  //                     _searchController.text = person.name;
+  //                     setState(() {
+  //                       suggestions.clear(); // hide list
+  //                     });
+  //                   },
+  //                 );
+  //               },
+  //             ),
+  //           )
+  //         ],
+  //       ),
+  //     ),
+
+
+
       endDrawer: drawerTest(context),
       backgroundColor: Colors.white,
       body : Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          searchField(),
+          // searchField(),
+          anathor(),
           SizedBox(height : 40,),
           categoriesSection(),
           // SizedBox(height : 40,),
           // dietSection()
         ],
       ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: _onTabTapped,
+        selectedItemColor: Colors.orange,
+        backgroundColor : const Color.fromARGB(255, 241, 224, 200),
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            label: 'Search',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
+          ),
+        ],
+      ),
     );
   }
+
+  // search focus
+  void _onTabTapped(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+
+    if (index == 1) {
+      Future.delayed(Duration(milliseconds: 100), () {
+        FocusScope.of(context).requestFocus(_searchFocusNode);
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _searchFocusNode.dispose();
+    _searchController.dispose();
+    super.dispose();
+  }
+  ///
+
+  void _onSearchChanged(String query) {
+    setState(() {
+      suggestions = people
+          .where((person) =>
+              person.name.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+    });
+  }
+
+
 
   Drawer drawerTest(BuildContext context) {
     return Drawer(
@@ -254,59 +366,259 @@ class _HomePageState extends State<HomePage> {
         );
   }
 
-  Container searchField() {
-    return Container(
-          margin : EdgeInsets.only(top : 40, left : 20, right : 20),
-          decoration: BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                color: const Color.fromARGB(255, 183, 190, 194),
-                blurRadius: 40,
-                spreadRadius: 0.0,
-              )
-            ],
-          ),
-          child: TextField(
-            decoration: InputDecoration(
-              filled : true,
-              fillColor: Colors.white,
-              contentPadding: EdgeInsets.all(15),
-              hintText: 'Search',
-              hintStyle: TextStyle(
-                color : const Color.fromARGB(255, 81, 79, 79),
-                fontSize : 14,
-              ),
-              prefixIcon: Padding(
-                padding: const EdgeInsets.all(12),
-                child: SvgPicture.network('assets/icons/search.svg'),
-              ),
-              suffixIcon: Container(
-                width: 100,
-                child: IntrinsicHeight(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      VerticalDivider(
-                        color : const Color.fromARGB(255, 59, 58, 58),
-                        indent: 10,
-                        endIndent: 10,
-                        thickness: 0.1,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: SvgPicture.network('assets/icons/Filter.svg'),
-                      ),
-                    ],
+Stack anathor() {
+  return Stack(
+  children: [
+    // Main layout under the floating suggestion box
+    Column(
+      children: [
+        // 🔗 Attach anchor for the suggestion box
+        CompositedTransformTarget(
+          link: _layerLink,
+          child: Container(
+            margin: EdgeInsets.only(top: 40, left: 20, right: 20),
+            decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(
+                  color: const Color.fromARGB(255, 183, 190, 194),
+                  blurRadius: 40,
+                  spreadRadius: 0.0,
+                )
+              ],
+            ),
+            child: TextField(
+              focusNode: _searchFocusNode,
+              controller: _searchController,
+              onChanged: _onSearchChanged,
+              decoration: InputDecoration(
+                filled: true,
+                fillColor: Colors.white,
+                contentPadding: EdgeInsets.all(15),
+                hintText: 'Search',
+                hintStyle: TextStyle(
+                  color: const Color.fromARGB(255, 81, 79, 79),
+                  fontSize: 14,
+                ),
+                prefixIcon: Padding(
+                  padding: const EdgeInsets.all(12),
+                  child: SvgPicture.network('assets/icons/search.svg'),
+                ),
+                suffixIcon: Container(
+                  width: 100,
+                  child: IntrinsicHeight(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        VerticalDivider(
+                          color: const Color.fromARGB(255, 59, 58, 58),
+                          indent: 10,
+                          endIndent: 10,
+                          thickness: 0.1,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: SvgPicture.network('assets/icons/Filter.svg'),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15),
+                  borderSide: BorderSide.none,
+                ),
               ),
-              border : OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15),
-                borderSide: BorderSide.none,
-              )
             ),
           ),
-        );
+        ),
+
+        // 👇 Fixed content below search bar
+        // SizedBox(height: 150),
+        // Container(
+        //   height: 200,
+        //   margin: EdgeInsets.symmetric(horizontal: 20),
+        //   color: Colors.amber,
+        //   child: Center(child: Text('Fixed Content Below')),
+        // ),
+      ],
+    ),
+
+    // 🧊 Floating suggestion box
+    if (suggestions.isNotEmpty)
+      Positioned(
+        left: 20,
+        right: 20,
+        top: 100, // adjust if needed
+        child: CompositedTransformFollower(
+          link: _layerLink,
+          showWhenUnlinked: false,
+          offset: Offset(0, 60), // float it below TextField
+          child: Material(
+            elevation: 4,
+            borderRadius: BorderRadius.circular(12),
+            child: ListView.builder(
+              padding: EdgeInsets.zero,
+              shrinkWrap: true,
+              itemCount: suggestions.length,
+              itemBuilder: (context, index) {
+                final person = suggestions[index];
+                return ListTile(
+                  title: Text(person.name),
+                  subtitle: Text(person.job),
+                  onTap: () {
+                    _searchController.text = person.name;
+                    setState(() {
+                      suggestions.clear();
+                    });
+                  },
+                );
+              },
+            ),
+          ),
+        ),
+      ),
+  ],
+);
+
+}
+  Stack searchField() {
+    return Stack(
+      children: [
+        Column(
+          children : [
+            CompositedTransformTarget(
+              link: _layerLink,
+              child : Container(
+              margin : EdgeInsets.only(top : 40, left : 20, right : 20),
+              decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color.fromARGB(255, 183, 190, 194),
+                    blurRadius: 40,
+                    spreadRadius: 0.0,
+                  )
+                ],
+              ),
+              
+              child: TextField(
+                focusNode: _searchFocusNode,
+                controller: _searchController,
+                onChanged: _onSearchChanged,
+                decoration: InputDecoration(
+                  filled : true,
+                  fillColor: Colors.white,
+                  contentPadding: EdgeInsets.all(15),
+                  hintText: 'Search',
+                  hintStyle: TextStyle(
+                    color : const Color.fromARGB(255, 81, 79, 79),
+                    fontSize : 14,
+                  ),
+                  prefixIcon: Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: SvgPicture.network('assets/icons/search.svg'),
+                  ),
+                  suffixIcon: Container(
+                    width: 100,
+                    child: IntrinsicHeight(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          VerticalDivider(
+                            color : const Color.fromARGB(255, 59, 58, 58),
+                            indent: 10,
+                            endIndent: 10,
+                            thickness: 0.1,
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: SvgPicture.network('assets/icons/Filter.svg'),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  border : OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(15),
+                    borderSide: BorderSide.none,
+                  )
+                ),
+              ),
+              )
+          )
+      ],
+      
+            // SizedBox(height: 10),
+            //   Expanded(
+            //     child: ListView.builder(
+            //       itemCount: suggestions.length,
+            //       itemBuilder: (context, index) {
+            //         final person = suggestions[index];
+            //         return ListTile(
+            //           title: Text(person.name),
+            //           subtitle: Text(person.job),
+            //           onTap: () {
+            //             // Set text to selected suggestion
+            //             _searchController.text = person.name;
+            //             setState(() {
+            //               suggestions.clear(); // hide list
+            //             });
+            //           },
+            //         );
+            //       },
+            //     ),
+            //   )
+      
+      
+      
+      
+      
+      
+      
+          ),
+
+
+
+if (suggestions.isNotEmpty)
+      Positioned(
+        width: MediaQuery.of(context).size.width - 40,
+        left: 20,
+        top: 100, // Adjust this based on TextField position
+        child: CompositedTransformFollower(
+          link: _layerLink,
+          showWhenUnlinked: false,
+          offset: Offset(0, 60), // Position below the TextField
+          child: Material(
+            elevation: 4,
+            borderRadius: BorderRadius.circular(12),
+            child: ListView.builder(
+              padding: EdgeInsets.zero,
+              shrinkWrap: true,
+              itemCount: suggestions.length,
+              itemBuilder: (context, index) {
+                final person = suggestions[index];
+                return ListTile(
+                  title: Text(person.name),
+                  subtitle: Text(person.job),
+                  onTap: () {
+                    _searchController.text = person.name;
+                    setState(() {
+                      suggestions.clear();
+                    });
+                  },
+                );
+              },
+            ),
+          ),
+        ),
+      ),
+
+
+
+
+
+
+      ]
+    );
   }
 
   AppBar appBar() {
