@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/models/client.dart';
+import 'package:flutter_application_1/pages/home.dart';
+import 'package:flutter_application_1/services/api.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -8,18 +11,40 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
+  final api = Api();
+
   final TextEditingController _loginController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
   bool _isPasswordVisible = false;
+
+  bool _isLoggedIn = false;
+
+  Future<void> _checkLoginStatus(UserCredentials cred) async {
+    bool isLoggedIn = await api.signIn(cred);
+    setState(() {
+      _isLoggedIn = isLoggedIn;
+    });
+  }
 
   void _handleSignIn() {
     final login = _loginController.text.trim();
     final password = _passwordController.text.trim();
 
     // TODO: Add your login logic here
-    // print('Login: $login');
-    // print('Password: $password');
+    print('Login: $login');
+    print('Password: $password');
+    final cred = UserCredentials(
+      login : login,
+      password : password
+    );
+    _checkLoginStatus(cred);
+    if (_isLoggedIn) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage()),
+      );
+    }
   }
 
   @override

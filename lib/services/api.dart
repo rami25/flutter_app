@@ -5,11 +5,11 @@ import 'dart:convert';
 import '../models/client.dart';
 
 class Api {
-  final String apiBaseUrl = 'http::3000/localhost';
+  final String apiBaseUrl = 'http://localhost:3000/api/pcd0/client';
   final storage = FlutterSecureStorage();
 
   Future<bool> signIn(UserCredentials credentials) async {
-    final url = Uri.parse('$apiBaseUrl/login');
+    final url = Uri.parse('$apiBaseUrl/sign-in');
 
     final response = await http.post(
       url,
@@ -19,7 +19,7 @@ class Api {
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-      await storage.write(key: 'token', value: data['token']);
+      await storage.write(key: 'token', value: data['jwt']);
       print('Login successful');
       return true;
     } else {
@@ -48,9 +48,9 @@ class Api {
     }
   }
 
-  Future<void> getHistory() async {
+  Future<void> getReceipts() async {
     final token = await storage.read(key: 'token');
-    final url = Uri.parse('$apiBaseUrl/get');
+    final url = Uri.parse('$apiBaseUrl/get-receipts');
 
     final response = await http.get(
       url,

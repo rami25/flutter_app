@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/models/client.dart';
+import 'package:flutter_application_1/services/api.dart';
 import 'package:intl/intl.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -9,6 +11,8 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  final api = Api();
+
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController _userNameController = TextEditingController();
@@ -43,15 +47,24 @@ class _SignUpPageState extends State<SignUpPage> {
       final userName = _userNameController.text.trim();
       final email = _emailController.text.trim();
       final password = _passwordController.text.trim();
-      final cardId = int.tryParse(_cardIdController.text.trim());
+      // final cardId = int.tryParse(_cardIdController.text.trim());
+      final cardId = _cardIdController.text.trim();
       final cardDate = _cardDate;
 
       // TODO: Send this data to your backend or process it
-      // print('Username: $userName');
-      // print('Email: $email');
-      // print('Password: $password');
-      // print('Card ID: $cardId');
-      // print('Card Date: $cardDate');
+      print('Username: $userName');
+      print('Email: $email');
+      print('Password: $password');
+      print('Card ID: $cardId');
+      print('Card Date: $cardDate');
+      final client = Client(
+        userName: userName,  
+        email: email,
+        password: password,
+        card_Id: cardId,
+        // cardDate: cardDate,
+      );
+      api.signUp(client);
     }
   }
 

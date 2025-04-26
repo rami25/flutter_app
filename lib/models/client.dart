@@ -2,12 +2,8 @@ class Client {
   String userName;
   String email;
   String password;
-  int cardId;
-  DateTime cardDate;
-/////
-
-/////
-
+  String card_Id;
+  // DateTime? cardDate;
 
 
 
@@ -15,16 +11,16 @@ class Client {
     required this.userName,
     required this.email,
     required this.password,
-    required this.cardId,
-    required this.cardDate,
+    required this.card_Id
+    // required this.cardDate,
   });
 
   Map<String, dynamic> toJson() => {
     'userName' : userName,
     'email' : email,
     'password' : password,
-    'cardId' : cardId,
-    'cardDate' : cardDate,
+    'card_Id' : card_Id
+    // 'cardDate' : cardDate,
   };
 }
 

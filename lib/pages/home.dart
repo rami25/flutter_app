@@ -3,6 +3,8 @@ import 'package:flutter_application_1/models/category_model.dart';
 import 'package:flutter_application_1/models/diet_model.dart';
 import 'package:flutter_application_1/pages/profile.dart';
 import 'package:flutter_application_1/pages/signInOrUp.dart';
+import 'package:flutter_application_1/pages/signInPage.dart';
+import 'package:flutter_application_1/pages/signUpPage.dart';
 import 'package:flutter_application_1/services/api.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -167,33 +169,35 @@ class _HomePageState extends State<HomePage> {
               // Add your navigation logic here
             },
           ),
-          ListTile(
-            leading: const Icon(Icons.person),
-            title: const Text('Profile'),
-            onTap: () {
-              if (!_isLoggedIn) {
+          if (_isLoggedIn)
+            ListTile(
+              leading: const Icon(Icons.person),
+              title: const Text('Profile'),
+              onTap: () {
+                if (!_isLoggedIn) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SignInOrUp()),
+                  );
+                } else {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ProfilePage()),
+                  );
+                }
+              },
+            ),
+          if (_isLoggedIn)
+            ListTile(
+              leading: const Icon(Icons.settings),
+              title: const Text('Settings'),
+              onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => SignInOrUp()),
+                  MaterialPageRoute(builder: (context) => HomePage()),
                 );
-              } else {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => ProfilePage()),
-                );
-              }
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.settings),
-            title: const Text('Settings'),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => HomePage()),
-              );
-            },
-          ),
+              },
+            ),
           if (_isLoggedIn) 
             ListTile(
               leading: const Icon(Icons.logout),
@@ -203,6 +207,30 @@ class _HomePageState extends State<HomePage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => HomePage()),
+                );
+              },
+            ),
+          if (!_isLoggedIn) 
+            ListTile(
+              leading: const Icon(Icons.login),
+              title: const Text('Sign In'),
+              onTap: () async {
+                await api.logout();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SignInPage()),
+                );
+              },
+            ),
+          if (!_isLoggedIn) 
+            ListTile(
+              leading: const Icon(Icons.create),
+              title: const Text('Sign Up'),
+              onTap: () async {
+                await api.logout();
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SignUpPage()),
                 );
               },
             ),
@@ -307,7 +335,7 @@ class _HomePageState extends State<HomePage> {
               child: Text(
                 'Category',
                 style : TextStyle(
-                  color : Colors.black,
+                  color : Colors.indigo,
                   fontSize : 18,
                   fontWeight: FontWeight.w600
                 )
