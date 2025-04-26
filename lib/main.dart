@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Navigation Example',
+      title: 'SmartShop-app',
       theme: ThemeData(primarySwatch: Colors.orange),
       home: HomePage(),
     );
