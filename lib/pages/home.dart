@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/category_model.dart';
 import 'package:flutter_application_1/models/diet_model.dart';
 import 'package:flutter_application_1/pages/profile.dart';
+import 'package:flutter_application_1/pages/receipts.dart';
 import 'package:flutter_application_1/pages/signInOrUp.dart';
 import 'package:flutter_application_1/pages/signInPage.dart';
 import 'package:flutter_application_1/pages/signUpPage.dart';
@@ -69,7 +70,7 @@ class _HomePageState extends State<HomePage> {
     return BottomNavigationBar(
       currentIndex: _currentIndex,
       onTap: _onTabTapped,
-      selectedItemColor: Colors.indigo,
+      selectedItemColor: Colors.blueGrey[800],
       backgroundColor : Colors.indigo[50],
       items: const [
         BottomNavigationBarItem(
@@ -137,7 +138,7 @@ class _HomePageState extends State<HomePage> {
             height: 65,
             child: DrawerHeader(
               decoration: BoxDecoration(
-                color: Colors.indigo,
+                color: Colors.blueGrey[800],
               ),
               child: Transform.translate(
                 offset: const Offset(0, -7),
@@ -185,6 +186,17 @@ class _HomePageState extends State<HomePage> {
                     MaterialPageRoute(builder: (context) => ProfilePage()),
                   );
                 }
+              },
+            ),
+          if (_isLoggedIn)
+            ListTile(
+              leading: const Icon(Icons.note),
+              title: const Text('Receipts'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => ReceiptsPage()),
+                );
               },
             ),
           if (_isLoggedIn)
@@ -335,7 +347,7 @@ class _HomePageState extends State<HomePage> {
               child: Text(
                 'Category',
                 style : TextStyle(
-                  color : Colors.indigo,
+                  color: Colors.blueGrey[800],
                   fontSize : 18,
                   fontWeight: FontWeight.w600
                 )
@@ -455,12 +467,12 @@ class _HomePageState extends State<HomePage> {
       title : Text(
         'Smart-Shop',
         style : TextStyle(
-          color : Colors.indigo,
+          color : Colors.white,
           fontSize: 24,
           fontWeight : FontWeight.bold
         )
       ),
-      backgroundColor : const Color.fromARGB(255, 191, 200, 236),
+      backgroundColor: Colors.blueGrey[800],
       elevation : 0.0,
       // centerTitle: true,
       // leading : GestureDetector(

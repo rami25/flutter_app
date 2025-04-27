@@ -16,20 +16,20 @@ class SignInOrUp extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.lock_outline, size: 100, color: Colors.indigo),
+              Icon(Icons.lock_outline, size: 100, color: Colors.blueGrey[800]),
               const SizedBox(height: 30),
               Text(
                 'Welcome Back!',
                 style: TextStyle(
                   fontSize: 32,
                   fontWeight: FontWeight.bold,
-                  color: Colors.indigo[800],
+                  color: Colors.blueGrey[800],
                 ),
               ),
               const SizedBox(height: 10),
               Text(
                 'Please sign in or sign up to continue',
-                style: TextStyle(fontSize: 16, color: Colors.indigo[600]),
+                style: TextStyle(fontSize: 16, color: Colors.blueGrey[600]),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 40),
@@ -42,7 +42,7 @@ class SignInOrUp extends StatelessWidget {
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.indigo,
+                  backgroundColor: Colors.blueGrey[800],
                   padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
                 ),
@@ -58,11 +58,11 @@ class SignInOrUp extends StatelessWidget {
                   );
                 },
                 style: OutlinedButton.styleFrom(
-                  side: const BorderSide(color: Colors.indigo),
+                  side: BorderSide(color: Colors.blueGrey[800]!),
                   padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
                 ),
-                child: const Text('Sign Up', style: TextStyle(fontSize: 18, color: Colors.indigo)),
+                child: Text('Sign Up', style: TextStyle(fontSize: 18, color: Colors.blueGrey[800])),
               ),
             ],
           ),

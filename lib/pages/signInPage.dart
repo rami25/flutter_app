@@ -58,14 +58,14 @@ class _SignInPageState extends State<SignInPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const Icon(Icons.lock_outline, size: 100, color: Colors.indigo),
+              Icon(Icons.lock_outline, size: 100, color: Colors.blueGrey[800]),
               const SizedBox(height: 24),
               Text(
                 'Sign In',
                 style: TextStyle(
                   fontSize: 32,
                   fontWeight: FontWeight.bold,
-                  color: Colors.indigo[800],
+                  color: Colors.blueGrey[800],
                 ),
               ),
               const SizedBox(height: 24),
@@ -109,7 +109,7 @@ class _SignInPageState extends State<SignInPage> {
               ElevatedButton(
                 onPressed: _handleSignIn,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.indigo,
+                  backgroundColor: Colors.blueGrey[800],
                   minimumSize: const Size(double.infinity, 50),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                 ),

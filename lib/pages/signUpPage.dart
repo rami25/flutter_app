@@ -79,7 +79,7 @@ class _SignUpPageState extends State<SignUpPage> {
           key: _formKey,
           child: Column(
             children: [
-              const Icon(Icons.person_add_alt_1, size: 80, color: Colors.indigo),
+              Icon(Icons.person_add_alt_1, size: 80, color: Colors.blueGrey[800]),
               const SizedBox(height: 20),
 
               // Username
@@ -165,7 +165,7 @@ class _SignUpPageState extends State<SignUpPage> {
               ElevatedButton(
                 onPressed: _handleSignUp,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.indigo,
+                  backgroundColor: Colors.blueGrey[800],
                   minimumSize: const Size(double.infinity, 50),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12)),

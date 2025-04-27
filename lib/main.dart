@@ -12,7 +12,14 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'SmartShop-app',
-      theme: ThemeData(primarySwatch: Colors.orange),
+      // theme: ThemeData(primarySwatch: Colors.blueGrey),
+      theme: ThemeData(
+      appBarTheme: AppBarTheme(
+         iconTheme: IconThemeData(
+           color: Colors.white, // Changes all app bar icons globally
+         ),
+       ),
+      ),
       home: HomePage(),
     );
   }

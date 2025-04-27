@@ -48,19 +48,21 @@ class Api {
     }
   }
 
-  Future<void> getReceipts() async {
-    final token = await storage.read(key: 'token');
-    final url = Uri.parse('$apiBaseUrl/get-receipts');
-
+  Future<ClientR> getReceipts() async {
+    final token = await storage.read(key : 'token');
     final response = await http.get(
-      url,
+      Uri.parse('$apiBaseUrl/get-receipts'),
       headers: {'Authorization': 'Bearer $token'},
     );
-
     if (response.statusCode == 200) {
-      print('Protected data: ${response.body}');
+          final responseBody = json.decode(response.body);
+          final clientJson = responseBody['client'];
+          if (clientJson == null) {
+            throw Exception('Client data not found in response');
+          }
+          return ClientR.fromJson(clientJson);
     } else {
-      print('Unauthorized');
+      throw Exception('Failed to load client data');
     }
   }
 
