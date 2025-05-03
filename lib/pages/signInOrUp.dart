@@ -8,8 +8,7 @@ class SignInOrUp extends StatelessWidget {
  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('')),
-      backgroundColor: Colors.indigo[50],
+      appBar: appBar(),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(24.0),
@@ -70,4 +69,11 @@ class SignInOrUp extends StatelessWidget {
       ),
     );
   }
+
+ AppBar appBar() {
+    return AppBar(
+      backgroundColor: Colors.blueGrey[800],
+      elevation : 0.0,
+    );
+ }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/models/client.dart';
+import 'package:flutter_application_1/pages/signInPage.dart';
 import 'package:flutter_application_1/services/api.dart';
 import 'package:intl/intl.dart';
 
@@ -42,7 +43,7 @@ class _SignUpPageState extends State<SignUpPage> {
     }
   }
 
-  void _handleSignUp() {
+  void _handleSignUp() async {
     if (_formKey.currentState!.validate()) {
       final userName = _userNameController.text.trim();
       final email = _emailController.text.trim();
@@ -64,15 +65,28 @@ class _SignUpPageState extends State<SignUpPage> {
         card_Id: cardId,
         // cardDate: cardDate,
       );
-      api.signUp(client);
+      if (await api.signUp(client)) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Sign Up successful!'),
+            backgroundColor: Colors.green,
+            duration: Duration(seconds: 2),
+          ),
+        );
+        Future.delayed(Duration(milliseconds: 500), () {
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (_) => SignInPage()),
+          );
+        });
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.indigo[50],
-      appBar: AppBar(title: const Text('Sign Up')),
+      appBar: appBar(),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24),
         child: Form(
@@ -179,6 +193,22 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
+  AppBar appBar() {
+    return AppBar(
+      // title : Text(
+      //   'Sign Up',
+      //   style : TextStyle(
+      //     color : Colors.white,
+      //     fontSize: 24,
+      //     fontWeight : FontWeight.bold
+      //   )
+      // ),
+      backgroundColor: Colors.blueGrey[800],
+      elevation : 0.0,
+    );
+  }
+    
+  
   InputDecoration _inputDecoration(String label, IconData icon) {
     return InputDecoration(
       labelText: label,

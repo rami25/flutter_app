@@ -25,6 +25,21 @@ class _SignInPageState extends State<SignInPage> {
     setState(() {
       _isLoggedIn = isLoggedIn;
     });
+    if (_isLoggedIn) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Login successful!'),
+          backgroundColor: Colors.green,
+          duration: Duration(seconds: 2),
+        ),
+      );
+      Future.delayed(Duration(milliseconds: 500), () {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => HomePage()),
+        );
+      });
+    }
   }
 
   void _handleSignIn() {
@@ -39,19 +54,12 @@ class _SignInPageState extends State<SignInPage> {
       password : password
     );
     _checkLoginStatus(cred);
-    if (_isLoggedIn) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => HomePage()),
-      );
-    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Sign In')),
-      backgroundColor: Colors.indigo[50],
+      appBar: appBar(),
       body: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 40),
@@ -119,6 +127,21 @@ class _SignInPageState extends State<SignInPage> {
           ),
         ),
       ),
+    );
+  }
+
+  AppBar appBar() {
+    return AppBar(
+      // title : Text(
+      //   'Sign In',
+      //   style : TextStyle(
+      //     color : Colors.white,
+      //     fontSize: 24,
+      //     fontWeight : FontWeight.bold
+      //   )
+      // ),
+      backgroundColor: Colors.blueGrey[800],
+      elevation : 0.0,
     );
   }
 }

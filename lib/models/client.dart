@@ -76,14 +76,14 @@ class ClientR {
 
   factory ClientR.fromJson(Map<String, dynamic> json) {
     try {
-    final boxJson = json['box'] as List? ?? [];
-    return ClientR(
-      box: boxJson.map((item) => Item.fromJson(item)).toList(),
-      totalAmount: (json['total_amount'] ?? 0).toDouble(),
-      credit: (json['credit'] ?? 0).toDouble(),
-      entryDate: DateTime.parse(json['entry_date'] ?? DateTime.now().toIso8601String()),
-      processingDate: DateTime.parse(json['processing_date'] ?? DateTime.now().toIso8601String()),
-    );
+      final boxJson = json['box'] as List? ?? [];
+      return ClientR(
+        box: boxJson.map((item) => Item.fromJson(item)).toList(),
+        totalAmount: (json['total_amount'] ?? 0).toDouble(),
+        credit: (json['credit'] ?? 0).toDouble(),
+        entryDate: DateTime.parse(json['entry_date'] ?? DateTime.now().toIso8601String()),
+        processingDate: DateTime.parse(json['processing_date'] ?? DateTime.now().toIso8601String()),
+      );
     } catch (e) {
        throw FormatException('Failed to parse Client: $e');
     }

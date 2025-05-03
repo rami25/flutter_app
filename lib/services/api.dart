@@ -20,6 +20,8 @@ class Api {
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       await storage.write(key: 'token', value: data['jwt']);
+      await storage.write(key: 'userName', value: data['client']['userName']);
+      await storage.write(key: 'email', value: data['client']['email']);
       print('Login successful');
       return true;
     } else {
@@ -39,11 +41,11 @@ class Api {
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-      await storage.write(key: 'token', value: data['token']);
-      print('sign successful');
+      // await storage.write(key: 'token', value: data['token']);
+      print(data['message']);
       return true;
     } else {
-      print('sign failed');
+      print('signing failed');
       return false;
     }
   }
